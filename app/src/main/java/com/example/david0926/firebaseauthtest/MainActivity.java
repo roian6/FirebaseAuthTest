@@ -96,12 +96,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isValidPasswd(String target) {
-        Pattern p = Pattern.compile("(^.*(?=.{6,100})(?=.*[0-9])(?=.*[a-zA-Z]).*$)");
+        Pattern p = Pattern.compile("(^.*(?=.{6,100})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$)");
 
         Matcher m = p.matcher(target);
         if (m.find() && !target.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")){
             return true;
-        }else{
+        }
+        else {
             return false;
         }
     }
@@ -109,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean isValidEmail(String target) {
         if (target == null || TextUtils.isEmpty(target)){
             return false;
-        } else {
+        }
+        else {
             return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
         }
     }
@@ -131,25 +133,29 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Toast.makeText(getApplicationContext(), "createUserWithEmail:onComplete:" + task.isSuccessful(),
-                                Toast.LENGTH_SHORT).show();
 
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Authentication failed",
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Authentication Success",
                                     Toast.LENGTH_SHORT).show();
                         }
-
+                        else {
+                            Toast.makeText(getApplicationContext(), "Authentication Failed",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }
     private void login(String email, String password) {
-        firebaseAuth.signInWithEmailAndPassword(idEdt.getText().toString(), pwEdt.getText().toString())
+        firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Toast.makeText(getApplicationContext(), "signInWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Authentication failed",
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Login Success",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Login Failed",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
